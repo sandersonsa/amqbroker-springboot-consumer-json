@@ -15,7 +15,7 @@ public class EventListener {
     @Value("${app.springboot.queue}")
     private String destinationQueue;
 
-    @JmsListener(destination = "compra_queue", containerFactory = "defaultFactory")
+    @JmsListener(destination = "${app.springboot.queue}")
     public void receiveMessage(String message) {
         log.info(" ## Message :: {} ", message);
         // System.out.println("Mensagem da fila:" + ticket);
