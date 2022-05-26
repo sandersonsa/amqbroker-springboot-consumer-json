@@ -22,7 +22,8 @@ public class EventListener {
     @JmsListener(destination = "${app.springboot.queue}")
     public void receiveMessage(String message) {
         log.info(" ## Message :: {} ", message);
-        convertPessoa(message);
+        Pessoa pessoa = convertPessoa(message);
+        log.info(" ## Pessoa :: {}", pessoa);
     }
 
     //Converter Message para Objeto
@@ -32,14 +33,12 @@ public class EventListener {
         objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         
         //JSON string to Java Object
-        Pessoa pessoa;
+        Pessoa pessoa = null;
         try {
-            pessoa = objectMapper.readValue(message, Pessoa.class);
-            log.info(" ## Pessoa :: {}", pessoa);
+            pessoa = objectMapper.readValue(message, Pessoa.class);            
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }
-        
-        return null;
+        }        
+        return pessoa;
     }
 }
