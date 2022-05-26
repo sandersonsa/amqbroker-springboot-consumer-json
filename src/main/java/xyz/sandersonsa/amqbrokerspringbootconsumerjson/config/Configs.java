@@ -16,6 +16,7 @@ public class Configs {
     public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
         System.out.println("Config is starting.");
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
         objectMapper.findAndRegisterModules();
         return objectMapper;
     }

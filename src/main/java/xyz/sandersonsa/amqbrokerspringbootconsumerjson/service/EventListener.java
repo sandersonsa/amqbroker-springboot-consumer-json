@@ -2,6 +2,7 @@ package xyz.sandersonsa.amqbrokerspringbootconsumerjson.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.annotation.JmsListener;
@@ -26,12 +27,14 @@ public class EventListener {
 
     //Converter Message para Objeto
     private Pessoa convertPessoa(String message){
-        ObjectMapper mapper = new ObjectMapper();
-
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        
         //JSON string to Java Object
         Pessoa pessoa;
         try {
-            pessoa = mapper.readValue(message, Pessoa.class);
+            pessoa = objectMapper.readValue(message, Pessoa.class);
             log.info(" ## Pessoa :: {}", pessoa);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
